@@ -145,7 +145,7 @@ export default function TaskDetail() {
 
   const isManager = user?.role === 'admin' || user?.role === 'project_manager';
   // Fix: use userID (from DB) not id
-  const canEditStatus = isManager || user?.userID === task.assigneeID;
+  const canEditStatus = isManager || user?.id === task.assigneeID;
 
   const isOverdue = task.deadline && new Date(task.deadline) < new Date() && task.status !== 'done';
 

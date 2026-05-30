@@ -3,5 +3,63 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+model User {
+  userID         Int             @id @default(autoincrement())
+  username       String
+  email          String          @unique
+  password       String
+  role           String
+  createdAt      DateTime        @default(now())
+  projects       Project[]       @relation("ManagerProjects")
+  assignedTasks  Task[]          @relation("AssigneeTasks")
+  comments       Comment[]
+  projectMembers ProjectMember[]
+}
+
+model Project {
+  projectID   Int             @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime        @default(now())
+  managerID   Int
+  manager     User            @relation("ManagerProjects", fields: [managerID], references: [userID])
+  tasks       Task[]
+  members     ProjectMember[]
+}
+
+model Task {
+  taskID      Int       @id @default(autoincrement())
+  title       String
+  description String?
+  status      String    @default("to_do")
+  deadline    DateTime?
+  projectID   Int
+  assigneeID  Int?
+  createdAt   DateTime  @default(now())
+  project     Project   @relation(fields: [projectID], references: [projectID])
+  assignee    User?     @relation("AssigneeTasks", fields: [assigneeID], references: [userID])
+  comments    Comment[]
+}
+
+model Comment {
+  commentID Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  userID    Int
+  taskID    Int
+  user      User     @relation(fields: [userID], references: [userID])
+  task      Task     @relation(fields: [taskID], references: [taskID])
+}
+
+model ProjectMember {
+  projectID Int
+  userID    Int
+  project   Project @relation(fields: [projectID], references: [projectID])
+  user      User    @relation(fields: [userID], references: [userID])
+
+  @@id([projectID, userID])
 }

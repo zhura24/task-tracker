@@ -5,10 +5,15 @@ const jwt = require('jsonwebtoken');
 const prisma = require('../prismaClient');
 const JWT_SECRET = process.env.JWT_SECRET || 'tasktracker_super_secret_key_2026';
 
+// Simple logger to include timestamps for Vercel logs
+const logger = {
+  info: (msg) => console.log('[INFO]', new Date().toISOString(), msg),
+  error: (msg) => console.error('[ERROR]', new Date().toISOString(), msg)
+};
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
-    console.log('[REGISTER] Received:', { username, email, passwordLength: password?.length, role });
+    logger.info(`[REGISTER] Received: ${JSON.stringify({ username, email, passwordLength: password?.length, role })}`);
 
     if (!password || password.length === 0) {
       return res.status(400).json({ error: 'Password is required' });
@@ -18,7 +23,7 @@ router.post('/register', async (req, res) => {
     if (existingUser) return res.status(400).json({ error: 'Email already registered' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log('[REGISTER] Hashed password prefix:', hashedPassword.substring(0, 10));
+    logger.info(`[REGISTER] Hashed password prefix: ${hashedPassword.substring(0, 10)}`);
 
     const user = await prisma.user.create({
       data: {
@@ -29,10 +34,10 @@ router.post('/register', async (req, res) => {
       }
     });
 
-    console.log('[REGISTER] User created successfully, ID:', user.userID);
+    logger.info(`[REGISTER] User created successfully, ID: ${user.userID}`);
     res.status(201).json({ message: 'User registered successfully', userId: user.userID });
   } catch (err) {
-    console.error('[REGISTER] Error:', err.message);
+    logger.error(`[REGISTER] Error: ${err.stack || err.message}`);
     res.status(500).json({ error: err.message });
   }
 });
@@ -40,29 +45,29 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { identifier, password } = req.body;
-    console.log('[LOGIN] Received:', { identifier, passwordLength: password?.length });
+    logger.info(`[LOGIN] Received: ${JSON.stringify({ identifier, passwordLength: password?.length })}`);
 
-    const user = await prisma.user.findFirst({ 
-      where: { 
-        OR: [{ email: identifier }, { username: identifier }] 
-      } 
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [{ email: identifier }, { username: identifier }]
+      }
     });
 
     if (!user) {
-      console.log('[LOGIN] User not found for identifier:', identifier);
+      logger.info(`[LOGIN] User not found for identifier: ${identifier}`);
       return res.status(400).json({ error: 'Invalid username/email or password' });
     }
 
-    console.log('[LOGIN] Found user ID:', user.userID, 'username:', user.username);
+    logger.info(`[LOGIN] Found user ID: ${user.userID}, username: ${user.username}`);
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log('[LOGIN] Password valid:', validPassword);
+    logger.info(`[LOGIN] Password valid: ${validPassword}`);
 
     if (!validPassword) return res.status(400).json({ error: 'Invalid username/email or password' });
 
     const token = jwt.sign({ userId: user.userID, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
     res.json({ token, user: { id: user.userID, username: user.username, email: user.email, role: user.role } });
   } catch (err) {
-    console.error('[LOGIN] Error:', err.message);
+    logger.error(`[LOGIN] Error: ${err.stack || err.message}`);
     res.status(500).json({ error: err.message });
   }
 });

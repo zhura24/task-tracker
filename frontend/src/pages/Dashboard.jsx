@@ -13,8 +13,8 @@ export default function Dashboard() {
     const fetchDashboardData = async () => {
       try {
         const [projectsRes, tasksRes] = await Promise.all([
-          axios.get('http://localhost:3000/api/projects', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://localhost:3000/api/tasks', { headers: { Authorization: `Bearer ${token}` } })
+          axios.get('https://task-tracker-backend-ruddy.vercel.app/api/projects', { headers: { Authorization: `Bearer ${token}` } }),
+          axios.get('https://task-tracker-backend-ruddy.vercel.app/api/tasks', { headers: { Authorization: `Bearer ${token}` } })
         ]);
         setProjects(projectsRes.data);
         setTasks(tasksRes.data);

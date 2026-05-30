@@ -7,7 +7,7 @@ const useAuthStore = create((set) => ({
   
   login: async (identifier, password) => {
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', { identifier, password });
+      const response = await axios.post('https://task-tracker-backend-ruddy.vercel.app/api/auth/login', { identifier, password });
       const { user, token } = response.data;
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
@@ -20,7 +20,7 @@ const useAuthStore = create((set) => ({
 
   signup: async (username, email, password, role) => {
     try {
-      await axios.post('http://localhost:3000/api/auth/register', { username, email, password, role });
+      await axios.post('https://task-tracker-backend-ruddy.vercel.app/api/auth/register', { username, email, password, role });
       return { success: true };
     } catch (error) {
       return { success: false, error: error.response?.data?.error || 'Signup failed' };

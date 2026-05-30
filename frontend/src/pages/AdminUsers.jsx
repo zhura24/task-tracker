@@ -13,7 +13,7 @@ export default function AdminUsers() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/users', {
+      const res = await axios.get('https://task-tracker-backend-ruddy.vercel.app/api/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data);
@@ -35,11 +35,11 @@ export default function AdminUsers() {
       if (isEditing) {
         const payload = { username: formData.username, email: formData.email, role: formData.role };
         if (formData.password) payload.password = formData.password;
-        await axios.put(`http://localhost:3000/api/users/${formData.id}`, payload, {
+        await axios.put(`https://task-tracker-backend-ruddy.vercel.app/api/users/${formData.id}`, payload, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post('http://localhost:3000/api/users', formData, {
+        await axios.post('https://task-tracker-backend-ruddy.vercel.app/api/users', formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -53,7 +53,7 @@ export default function AdminUsers() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/users/${id}`, {
+      await axios.delete(`https://task-tracker-backend-ruddy.vercel.app/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchUsers();

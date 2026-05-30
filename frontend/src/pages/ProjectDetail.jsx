@@ -17,7 +17,7 @@ export default function ProjectDetail() {
 
   const fetchProject = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/projects/${id}`, {
+      const res = await axios.get(`https://task-tracker-backend-ruddy.vercel.app/api/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProject(res.data);
@@ -30,7 +30,7 @@ export default function ProjectDetail() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/users', {
+      const res = await axios.get('https://task-tracker-backend-ruddy.vercel.app/api/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data);
@@ -51,7 +51,7 @@ export default function ProjectDetail() {
   const handleCreateTask = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:3000/api/projects/${id}/tasks`, newTask, {
+      await axios.post(`https://task-tracker-backend-ruddy.vercel.app/api/projects/${id}/tasks`, newTask, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowTaskModal(false);
@@ -66,7 +66,7 @@ export default function ProjectDetail() {
     e.preventDefault();
     if (!memberEmail) return;
     try {
-      await axios.post(`http://localhost:3000/api/projects/${id}/members`, { email: memberEmail }, {
+      await axios.post(`https://task-tracker-backend-ruddy.vercel.app/api/projects/${id}/members`, { email: memberEmail }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowMemberModal(false);
@@ -80,7 +80,7 @@ export default function ProjectDetail() {
   const handleRemoveMember = async (userId) => {
     if (!window.confirm('Remove this member from the project?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/projects/${id}/members/${userId}`, {
+      await axios.delete(`https://task-tracker-backend-ruddy.vercel.app/api/projects/${id}/members/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchProject();

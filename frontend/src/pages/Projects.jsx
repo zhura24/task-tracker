@@ -13,7 +13,7 @@ export default function Projects() {
 
   const fetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/api/projects', {
+      const res = await axios.get('https://task-tracker-backend-ruddy.vercel.app/api/projects', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProjects(res.data);
@@ -31,7 +31,7 @@ export default function Projects() {
   const handleCreateProject = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/projects', 
+      await axios.post('https://task-tracker-backend-ruddy.vercel.app/api/projects', 
         { name: newProjectName, description: newProjectDesc },
         { headers: { Authorization: `Bearer ${token}` } }
       );

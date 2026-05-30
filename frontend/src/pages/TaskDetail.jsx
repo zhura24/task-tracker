@@ -33,14 +33,14 @@ export default function TaskDetail() {
 
   const fetchTaskDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/tasks`, {
+      const res = await axios.get(`https://task-tracker-backend-ruddy.vercel.app/api/tasks`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const currentTask = res.data.find(t => t.taskID === parseInt(id));
       setTask(currentTask);
 
       if (currentTask) {
-        const projRes = await axios.get(`http://localhost:3000/api/projects/${currentTask.projectID}`, {
+        const projRes = await axios.get(`https://task-tracker-backend-ruddy.vercel.app/api/projects/${currentTask.projectID}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProjectMembers(projRes.data.members || []);
@@ -52,7 +52,7 @@ export default function TaskDetail() {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/tasks/${id}/comments`, {
+      const res = await axios.get(`https://task-tracker-backend-ruddy.vercel.app/api/tasks/${id}/comments`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setComments(res.data);
@@ -73,7 +73,7 @@ export default function TaskDetail() {
   const handleUpdateStatus = async (status) => {
     setSavingStatus(true);
     try {
-      await axios.patch(`http://localhost:3000/api/tasks/${id}/status`, { status }, {
+      await axios.patch(`https://task-tracker-backend-ruddy.vercel.app/api/tasks/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTask({ ...task, status });
@@ -97,7 +97,7 @@ export default function TaskDetail() {
   const handleEditTask = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3000/api/tasks/${id}`, editFormData, {
+      await axios.put(`https://task-tracker-backend-ruddy.vercel.app/api/tasks/${id}`, editFormData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setShowEditModal(false);
@@ -111,7 +111,7 @@ export default function TaskDetail() {
     e.preventDefault();
     if (!newComment.trim()) return;
     try {
-      await axios.post(`http://localhost:3000/api/tasks/${id}/comments`, { content: newComment }, {
+      await axios.post(`https://task-tracker-backend-ruddy.vercel.app/api/tasks/${id}/comments`, { content: newComment }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNewComment('');
@@ -145,7 +145,7 @@ export default function TaskDetail() {
 
   const isManager = user?.role === 'admin' || user?.role === 'project_manager';
   // Fix: use userID (from DB) not id
-  const canEditStatus = isManager || user?.id === task.assigneeID;
+  const canEditStatus = isManager || user?.userID === task.assigneeID;
 
   const isOverdue = task.deadline && new Date(task.deadline) < new Date() && task.status !== 'done';
 

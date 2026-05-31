@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import useThemeStore from '../store/themeStore';
+
+export default function Landing() {
   const { theme, toggleTheme } = useThemeStore();
 
   return (

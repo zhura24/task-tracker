@@ -228,18 +228,14 @@ export default function ProjectDetail() {
                         {/* Role Editor (manager only) */}
                         {isManager && (
                           <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-                            <select
+                            <input
+                              type="text"
                               value={isEditing ? editingRole[m.user.userID] : (m.projectRole || 'Member')}
                               onChange={e => setEditingRole(prev => ({ ...prev, [m.user.userID]: e.target.value }))}
-                              className="text-xs px-2.5 py-1.5 border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
-                            >
-                              <option value="Member">Member</option>
-                              <option value="Project Manager">Project Manager</option>
-                              <option value="Developer">Developer</option>
-                              <option value="Designer">Designer</option>
-                              <option value="QA">QA Engineer</option>
-                              <option value="DevOps">DevOps</option>
-                            </select>
+                              onFocus={() => !isEditing && setEditingRole(prev => ({ ...prev, [m.user.userID]: m.projectRole || 'Member' }))}
+                              placeholder="Tulis role..."
+                              className="text-xs px-2.5 py-1.5 border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-400 w-36"
+                            />
                             {isEditing && (
                               <button
                                 onClick={() => handleSaveRole(m.user.userID)}

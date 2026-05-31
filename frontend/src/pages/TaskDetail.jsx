@@ -33,10 +33,10 @@ export default function TaskDetail() {
 
   const fetchTaskDetails = async () => {
     try {
-      const res = await axios.get(`https://task-tracker-backend-ruddy.vercel.app/api/tasks`, {
+      const res = await axios.get(`https://task-tracker-backend-ruddy.vercel.app/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const currentTask = res.data.find(t => t.taskID === parseInt(id));
+      const currentTask = res.data;
       setTask(currentTask);
 
       if (currentTask) {
@@ -156,9 +156,9 @@ export default function TaskDetail() {
       <div className="lg:col-span-2 space-y-5">
 
         {/* Header Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl shadow-indigo-100/40 dark:shadow-none border border-gray-100 dark:border-gray-700/60 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-100/50">
           {/* Top accent bar by status */}
-          <div className={`h-1 ${task.status === 'done' ? 'bg-green-500' : task.status === 'doing' ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}`} />
+          <div className={`h-2.5 w-full ${task.status === 'done' ? 'bg-gradient-to-r from-green-400 to-green-600' : task.status === 'doing' ? 'bg-gradient-to-r from-blue-400 to-indigo-500' : 'bg-gradient-to-r from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-500'}`} />
 
           <div className="p-6 md:p-8">
             {/* Breadcrumb */}
@@ -199,9 +199,9 @@ export default function TaskDetail() {
         </div>
 
         {/* Info Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Assignee */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/80 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700/60 p-6 flex flex-col justify-center transition-transform hover:-translate-y-1 hover:shadow-lg">
             <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">Assignee</p>
             <div className="flex items-center gap-3">
               {task.assignee ? (
@@ -218,7 +218,7 @@ export default function TaskDetail() {
           </div>
 
           {/* Deadline */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+          <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/80 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700/60 p-6 flex flex-col justify-center transition-transform hover:-translate-y-1 hover:shadow-lg">
             <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">Deadline</p>
             {task.deadline ? (
               <div className={`flex items-center gap-2 font-semibold ${isOverdue ? 'text-red-600 dark:text-red-400' : 'text-gray-800 dark:text-gray-200'}`}>
@@ -235,7 +235,7 @@ export default function TaskDetail() {
         </div>
 
         {/* Status Updater */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700/60 p-7">
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">Update Status</p>
           {canEditStatus ? (
             <div className="flex gap-2 flex-wrap">
@@ -269,7 +269,7 @@ export default function TaskDetail() {
       </div>
 
       {/* ── Right: Comments ─────────────────────────────── */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col sticky top-6" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl shadow-indigo-100/30 dark:shadow-none border border-gray-100 dark:border-gray-700/60 flex flex-col sticky top-6 overflow-hidden" style={{ maxHeight: 'calc(100vh - 6rem)' }}>
         <div className="p-5 border-b border-gray-100 dark:border-gray-700">
           <h3 className="text-base font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
             <svg className="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
@@ -287,10 +287,10 @@ export default function TaskDetail() {
           )}
           {comments.map(c => (
             <div key={c.commentID} className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-xs flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/60 dark:to-purple-900/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-sm border border-indigo-50 dark:border-indigo-800/50">
                 {c.user?.username?.charAt(0).toUpperCase()}
               </div>
-              <div className="flex-1 bg-gray-50 dark:bg-gray-700/50 rounded-xl p-3">
+              <div className="flex-1 bg-white dark:bg-gray-700/80 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-600/50 relative">
                 <div className="flex items-baseline gap-2 mb-1">
                   <span className="font-semibold text-sm text-gray-900 dark:text-gray-200">{c.user?.username}</span>
                   <span className="text-xs text-gray-400 dark:text-gray-500">{new Date(c.createdAt).toLocaleString('id-ID', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' })}</span>

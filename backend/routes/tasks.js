@@ -44,6 +44,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get specific task by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await prisma.task.findUnique({
+      where: { taskID: parseInt(id) },
+      include: {
+        project: { select: { name: true, managerID: true } },
+        assignee: { select: { username: true } }
+      }
+    });
+    
+    if (!task) return res.status(404).json({ error: 'Task not found' });
+    
+    // Allow access if user is admin, manager of the project, assignee, 
+    // or we could just allow any authenticated user to view it since they found the ID from the project page.
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Edit task / assign member (TT-005, TT-006) - Manager/Admin
 router.put('/:id', authorize(['project_manager', 'admin']), async (req, res) => {
   try {

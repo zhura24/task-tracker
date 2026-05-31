@@ -15,13 +15,13 @@ const ROLE_LABELS = {
 };
 
 const ROLE_COLORS = {
-  'Manager': 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300',
-  'Lead':    'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300',
-  'Developer':'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300',
-  'Designer': 'bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300',
-  'QA':       'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300',
-  'DevOps':   'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300',
-  'Member':   'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300',
+  'Manager':         'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300',
+  'Project Manager': 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300',
+  'Developer':       'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300',
+  'Designer':        'bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300',
+  'QA':              'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300',
+  'DevOps':          'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300',
+  'Member':          'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300',
 };
 
 const statusColors = {
@@ -234,7 +234,7 @@ export default function ProjectDetail() {
                               className="text-xs px-2.5 py-1.5 border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-400"
                             >
                               <option value="Member">Member</option>
-                              <option value="Lead">Team Lead</option>
+                              <option value="Project Manager">Project Manager</option>
                               <option value="Developer">Developer</option>
                               <option value="Designer">Designer</option>
                               <option value="QA">QA Engineer</option>

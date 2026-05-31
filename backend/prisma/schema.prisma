@@ -56,10 +56,11 @@ model Comment {
 }
 
 model ProjectMember {
-  projectID Int
-  userID    Int
-  project   Project @relation(fields: [projectID], references: [projectID])
-  user      User    @relation(fields: [userID], references: [userID])
+  projectID   Int
+  userID      Int
+  projectRole String? @default("Member")
+  project     Project @relation(fields: [projectID], references: [projectID])
+  user        User    @relation(fields: [userID], references: [userID])
 
   @@id([projectID, userID])
 }

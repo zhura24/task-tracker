@@ -53,7 +53,7 @@ router.get('/:id', async (req, res) => {
       include: {
         tasks: { include: { assignee: { select: { username: true } } } },
         members: { include: { user: { select: { userID: true, username: true, email: true } } } },
-        manager: { select: { username: true } }
+        manager: { select: { userID: true, username: true, email: true } }
       }
     });
     if (!project) return res.status(404).json({ error: 'Project not found' });
@@ -96,6 +96,22 @@ router.delete('/:id/members/:userId', authorize(['project_manager', 'admin']), a
       where: { projectID_userID: { projectID: parseInt(id), userID: parseInt(userId) } }
     });
     res.json({ message: 'Member removed' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update member role in project (TT-007) - Project Manager
+router.put('/:id/members/:userId/role', authorize(['project_manager', 'admin']), async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+    const { projectRole } = req.body;
+    
+    const updatedMember = await prisma.projectMember.update({
+      where: { projectID_userID: { projectID: parseInt(id), userID: parseInt(userId) } },
+      data: { projectRole }
+    });
+    res.json(updatedMember);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

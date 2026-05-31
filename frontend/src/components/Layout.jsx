@@ -28,7 +28,7 @@ export default function Layout({ children }) {
           <Link to="/profile" className="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 font-medium">My Profile</Link>
         </nav>
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Logged in as: <br/><span className="font-semibold text-gray-800 dark:text-gray-200">{user?.username} ({user?.role})</span></p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">Logged in as: <br/><span className="font-semibold text-gray-800 dark:text-gray-200">{user?.username} ({ { 'admin': 'Administrator', 'project_manager': 'Project Manager', 'team_member': 'Team Member' }[user?.role] || user?.role })</span></p>
           <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg font-medium">Logout</button>
         </div>
       </aside>

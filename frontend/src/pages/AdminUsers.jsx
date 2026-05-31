@@ -114,7 +114,7 @@ export default function AdminUsers() {
                     u.role === 'project_manager' ? 'bg-blue-100 text-blue-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
-                    {u.role.replace('_', ' ').toUpperCase()}
+                    {{ 'admin': 'Administrator', 'project_manager': 'Project Manager', 'team_member': 'Team Member' }[u.role] || u.role}
                   </span>
                 </td>
                 <td className="p-4 text-right space-x-3">

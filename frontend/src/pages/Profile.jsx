@@ -20,7 +20,7 @@ export default function Profile() {
                 user?.role === 'project_manager' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300' :
                 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
               }`}>
-                {user?.role?.replace('_', ' ').toUpperCase()}
+                {{ 'admin': 'Administrator', 'project_manager': 'Project Manager', 'team_member': 'Team Member' }[user?.role] || user?.role}
               </span>
             </div>
           </div>

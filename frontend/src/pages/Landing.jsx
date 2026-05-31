@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import useThemeStore from '../store/themeStore';
+  const { theme, toggleTheme } = useThemeStore();
 
-export default function Landing() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
       {/* Header */}
@@ -10,7 +11,10 @@ export default function Landing() {
             <div className="flex-shrink-0 flex items-center">
               <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">Task Tracker</h1>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex items-center space-x-4">
+              <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition text-sm font-medium mr-2">
+                {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+              </button>
               <Link to="/login" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">Log in</Link>
               <Link to="/signup" className="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-md text-sm font-medium transition">Sign up</Link>
             </div>

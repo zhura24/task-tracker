@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 import useThemeStore from '../store/themeStore';
+import NotificationsDropdown from './NotificationsDropdown';
 
 export default function Layout({ children }) {
   const { user, logout } = useAuthStore();
@@ -37,9 +38,12 @@ export default function Layout({ children }) {
       <main className="flex-1 flex flex-col">
         <header className="bg-white dark:bg-gray-800 h-16 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-8 shadow-sm transition-colors duration-200">
           <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200">Team Collaboration</h2>
-          <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
-            {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
-          </button>
+          <div className="flex items-center space-x-4">
+            <NotificationsDropdown />
+            <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition">
+              {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+            </button>
+          </div>
         </header>
         <div className="p-8 flex-1 overflow-auto">
           {children}

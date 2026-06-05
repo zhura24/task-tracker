@@ -73,12 +73,13 @@ export default function ProjectDetail() {
     e.preventDefault();
     if (!memberEmail) return;
     try {
-      await axios.post(`${API}/api/projects/${id}/members`, { email: memberEmail }, { headers });
+      const res = await axios.post(`${API}/api/projects/${id}/members`, { email: memberEmail }, { headers });
+      alert(res.data.message || 'Invitation sent successfully');
       setShowMemberModal(false);
       setMemberEmail('');
       fetchProject();
     } catch (err) {
-      alert(err.response?.data?.error || 'Failed to add member');
+      alert(err.response?.data?.error || 'Failed to send invitation');
     }
   };
 
@@ -319,7 +320,7 @@ export default function ProjectDetail() {
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setShowMemberModal(false)} className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-medium transition text-sm">Cancel</button>
-                <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition text-sm">Add to Project</button>
+                <button type="submit" className="px-5 py-2 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition text-sm">Send Invitation</button>
               </div>
             </form>
           </div>

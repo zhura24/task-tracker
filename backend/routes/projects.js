@@ -63,7 +63,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Add member to project (TT-003) - Project Manager
+// Add member to project (TT-003) - Project Manager (Sends invitation)
 router.post('/:id/members', authorize(['project_manager', 'admin']), async (req, res) => {
   try {
     const { id } = req.params;
@@ -79,10 +79,30 @@ router.post('/:id/members', authorize(['project_manager', 'admin']), async (req,
     });
     if (existingMember) return res.status(400).json({ error: 'User is already a member of this project' });
 
-    const projectMember = await prisma.projectMember.create({
+    // Check if there is already a pending invitation
+    const existingInvitation = await prisma.invitation.findFirst({
+      where: { projectID: parseInt(id), userID: user.userID, status: 'PENDING' }
+    });
+    if (existingInvitation) return res.status(400).json({ error: 'User already has a pending invitation to this project' });
+
+    const project = await prisma.project.findUnique({ where: { projectID: parseInt(id) } });
+
+    // Create Invitation
+    const invitation = await prisma.invitation.create({
       data: { projectID: parseInt(id), userID: user.userID }
     });
-    res.status(201).json(projectMember);
+
+    // Create Notification
+    await prisma.notification.create({
+      data: {
+        userID: user.userID,
+        message: `You have been invited to join the project "${project.name}"`,
+        type: 'INVITATION',
+        relatedId: invitation.id
+      }
+    });
+
+    res.status(201).json({ message: 'Invitation sent successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

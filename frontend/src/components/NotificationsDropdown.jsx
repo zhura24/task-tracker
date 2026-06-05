@@ -110,7 +110,7 @@ export default function NotificationsDropdown() {
               <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">No notifications</div>
             ) : (
               notifications.map(n => (
-                <div key={n.id} className={`p-4 border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-750 transition ${!n.isRead ? 'bg-indigo-50/30 dark:bg-indigo-900/10' : ''}`}>
+                <div key={n.id} className={`p-4 border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700 transition ${!n.isRead ? 'bg-indigo-50 dark:bg-indigo-900/40' : ''}`}>
                   <div className="flex justify-between items-start mb-1">
                     <p className={`text-sm ${!n.isRead ? 'font-semibold text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300'}`}>
                       {n.message}

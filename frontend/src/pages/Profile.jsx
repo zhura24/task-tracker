@@ -186,7 +186,7 @@ export default function Profile() {
                 <div className="space-y-3">
                   {recentTasks.map(task => (
                     <Link key={task.taskID} to={`/tasks/${task.taskID}`} className="block group">
-                      <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-750 border border-transparent group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20 group-hover:border-indigo-100 dark:group-hover:border-indigo-800 transition-all">
+                      <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-700/50 border border-transparent group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/20 group-hover:border-indigo-100 dark:group-hover:border-indigo-800 transition-all">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                             {task.title}

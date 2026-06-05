@@ -1,4 +1,4 @@
-# 📋 Task Tracker Application (MVP v1.0)
+# 📋 Task Tracker Application (MVP v1.1)
 
 Aplikasi manajemen proyek dan tugas berbasis web untuk mempermudah kolaborasi tim secara terpusat, transparan, dan real-time. Aplikasi ini dibuat menggunakan arsitektur terpisah antara Frontend (React) dan Backend (Express + PostgreSQL).
 

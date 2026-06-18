@@ -40,9 +40,14 @@ export default function Login() {
             Sign In
           </button>
         </form>
-        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
-          <Link to="/signup" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">Sign up</Link>
+        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400 flex flex-col space-y-2">
+          <span>
+            Don't have an account?{' '}
+            <Link to="/signup" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium">Sign up</Link>
+          </span>
+          <Link to="/forgot-password" className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium text-sm">
+            Forgot Password?
+          </Link>
         </p>
       </div>
     </div>

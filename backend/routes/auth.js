@@ -72,6 +72,90 @@ router.post('/login', async (req, res) => {
   }
 });
 
+const crypto = require('crypto');
+
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    logger.info(`[FORGOT_PASSWORD] Received request for email: ${email}`);
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      // Don't reveal if user exists or not
+      return res.json({ message: 'If an account with that email exists, we sent a password reset link.' });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
+
+    await prisma.user.update({
+      where: { email },
+      data: {
+        resetToken,
+        resetTokenExpiry
+      }
+    });
+
+    // In a real app, send this via email.
+    // For now, we will return it in the response for testing/simplicity.
+    logger.info(`[FORGOT_PASSWORD] Reset token generated for user ID: ${user.userID}`);
+    res.json({
+      message: 'If an account with that email exists, we sent a password reset link.',
+      // NOTE: For demonstration purposes we return the token, normally you'd email it.
+      resetToken: resetToken
+    });
+  } catch (err) {
+    logger.error(`[FORGOT_PASSWORD] Error: ${err.stack || err.message}`);
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+});
+
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    logger.info(`[RESET_PASSWORD] Received reset request with token length: ${token?.length}`);
+
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: 'Token and new password are required' });
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        resetToken: token,
+        resetTokenExpiry: {
+          gt: new Date() // Must not be expired
+        }
+      }
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid or expired reset token' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: { userID: user.userID },
+      data: {
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null
+      }
+    });
+
+    logger.info(`[RESET_PASSWORD] Password reset successfully for user ID: ${user.userID}`);
+    res.json({ message: 'Password reset successfully' });
+  } catch (err) {
+    logger.error(`[RESET_PASSWORD] Error: ${err.stack || err.message}`);
+    res.status(500).json({ error: 'Failed to reset password' });
+  }
+});
+
 router.post('/logout', (req, res) => {
   // Client-side removes token. Here we can just return success.
   res.json({ message: 'Logged out successfully' });

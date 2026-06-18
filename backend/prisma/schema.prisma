@@ -20,6 +20,8 @@ model User {
   projectMembers ProjectMember[]
   invitations    Invitation[]    @relation("UserInvitations")
   notifications  Notification[]  @relation("UserNotifications")
+  resetToken     String?
+  resetTokenExpiry DateTime?
 }
 
 model Project {
